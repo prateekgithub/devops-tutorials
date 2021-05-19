@@ -1,5 +1,5 @@
 # use a node base image
-FROM node:16-onbuild
+FROM node:16-alpine
 
 # set a health check
 HEALTHCHECK --interval=5s \

@@ -1,4 +1,5 @@
 node {
+    def app
 
     stage('Clone Repository') {
          /* Let's make sure we have the repository cloned to our workspace */
@@ -11,7 +12,7 @@ node {
             /* This builds actual image. synonymous to 
              * docker build on the command line */
 
-            def app = docker.build("prateekstudytech/devops-tutorials")
+            app = docker.build("prateekstudytech/devops-tutorials")
         }
 
         stage('Test Image') {

@@ -1,31 +1,39 @@
 node {
-    def app
 
-    stage('clone repository') {
+    stage('Clone Repository') {
          /* Let's make sure we have the repository cloned to our workspace */
 
         checkout scm
     }
 
-    stage('Build image') {
-        /* This builds actual image. synonymous to 
-         * docker build on the command line */
+    try {
+        stage('Build Image') {
+            /* This builds actual image. synonymous to 
+             * docker build on the command line */
 
-       app = docker.build("prateekstudytech/devops-tutorials")
-    }
+            def app = docker.build("prateekstudytech/devops-tutorials")
+        }
 
-    stage('Test image') {
+        stage('Test Image') {
         
-        app.inside {
-            sh 'echo "Test passed"'
+            app.inside {
+                sh 'echo "Test passed"'
+            }
+        }
+
+        stage('Push Image') {
+        
+            docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-creds') {
+                app.push("${env.BUILD_NUMBER}")
+                app.push("latest")
+            }
         }
     }
 
-    stage('push image') {
-        
-        docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-creds') {
-            app.push("${env.BUILD_NUMBER}")
-            app.push("latest")
+    finally {
+
+        stage('Remove local image') {
+            sh "docker rmi ${app.id}"
         }
     }
 }

@@ -1,12 +1,6 @@
 node {
     def app
 
-    environment { 
-        registry = "prateekstudytech/devops-tutorials"
-        registryCredential = 'docker-hub-creds' 
-        dockerImage = ''
-    }
-
     stage('clone repository') {
          /* Let's make sure we have the repository cloned to our workspace */
 
@@ -29,7 +23,7 @@ node {
 
     stage('push image') {
         
-        docker.withRegistry('prateekstudytech/devops-tutorials', 'docker-hub-creds') {
+        docker.withRegistry('https://hub.docker.com/repositories/prateekstudytech/devops-tutorials', 'docker-hub-creds') {
             app.push("${env.BUILD_NUMBER}")
             app.push("latest")
         }

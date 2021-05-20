@@ -23,7 +23,7 @@ node {
 
     stage('push image') {
         
-        docker.withRegistry('https://hub.docker.com/repositories/prateekstudytech/devops-tutorials', 'docker-hub-creds') {
+        docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-creds') {
             app.push("${env.BUILD_NUMBER}")
             app.push("latest")
         }
